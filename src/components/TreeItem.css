@@ -1,0 +1,61 @@
+.tree-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-info {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px;
+  border-radius: 3px;
+}
+
+.tree-children {
+  display: flex;
+}
+
+.tree-line__top, .tree-line__bottom {
+  position: absolute;
+  background-color: #ccc;
+  left: 50%;
+  top: -16px;
+  height: 16px;
+  width: 1px;
+}
+
+.tree-line__bottom {
+  top: auto;
+  /* 为了处理边框的一像素距离 */
+  bottom: -17px;
+}
+
+.tree-line__hor-top-right {
+  position: absolute;
+  background-color: #ccc;
+  width: 50%;
+  height: 1px;
+  top: 0;
+  right: 0;
+}
+
+.tree-line__hor-top-all {
+  position: absolute;
+  background-color: #ccc;
+  width: 100%;
+  height: 1px;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.tree-line__hor-top-left {
+  position: absolute;
+  background-color: #ccc;
+  width: 50%;
+  height: 1px;
+  top: 0;
+  left: 0;
+}
