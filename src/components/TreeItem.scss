@@ -2,60 +2,149 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   align-items: center;
-}
 
-.tree-info {
-  position: relative;
-  border: 1px solid #ccc;
-  padding: 16px;
-  margin: 16px;
-  border-radius: 3px;
-}
+  .tree-info {
+    position: relative;
+    border: 1px solid #ccc;
+    margin: 16px;
+    border-radius: 3px;
+    display: flex;
+    height: 120px;
+    max-width: 240px;
 
-.tree-children {
-  display: flex;
-}
+    .tree-info__avatar {
+      height: 100%;
+      width: 80px;
+      overflow: hidden;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      position: relative;
+      background-color: #eee;
 
-.tree-line__top, .tree-line__bottom {
-  position: absolute;
-  background-color: #ccc;
-  left: 50%;
-  top: -16px;
-  height: 16px;
-  width: 1px;
-}
+      > img {
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%)
+      }
 
-.tree-line__bottom {
-  top: auto;
-  /* 为了处理边框的一像素距离 */
-  bottom: -17px;
-}
+      > span {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 40px;
+        color: #999;
+      }
+    }
 
-.tree-line__hor-top-right {
-  position: absolute;
-  background-color: #ccc;
-  width: 50%;
-  height: 1px;
-  top: 0;
-  right: 0;
-}
+    .tree-info__prop {
+      position: relative;
+      padding: 8px;
+      padding-right: 16px;
+      line-height: 1.5em;
+      min-width: 240px - 80px - 40px; // 40px 宽度可自动调整
+      overflow: hidden;
 
-.tree-line__hor-top-all {
-  position: absolute;
-  background-color: #ccc;
-  width: 100%;
-  height: 1px;
-  top: 0;
-  left: 0;
-  right: 0;
-}
+      .tree-info__prop-name {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 8px;
+      }
 
-.tree-line__hor-top-left {
-  position: absolute;
-  background-color: #ccc;
-  width: 50%;
-  height: 1px;
-  top: 0;
-  left: 0;
+      .tree-info__prop-tag {
+        text-align: center;
+        position: absolute;
+        width: 100px;
+        height: 24px;
+        line-height: 24px;
+        top: 20px - 12px; // 24px高度
+        right: 20px - 50px; // 100px宽度
+        transform: rotate(45deg);
+        background-color: #ccc;
+        color: white;
+        font-weight: bold;
+      }
+
+      .tree-info__prop-number {
+        color: #999;
+      }
+    }
+
+    .tree-arrow__up {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      display: inline-block;
+      content: "";
+      width: 7px;
+      height: 7px;
+      border: solid #999;
+      border-width: 1px 1px 0 0;
+      transform: translate(0,-50%) rotate(-45deg);
+    }
+
+    .tree-arrow__down {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      display: inline-block;
+      content: "";
+      width: 7px;
+      height: 7px;
+      border: solid #999;
+      border-width: 1px 1px 0 0;
+      transform: translate(0,-50%) rotate(135deg);
+    }
+  }
+
+  .tree-children {
+    display: flex;
+  }
+
+  .tree-line__top, .tree-line__bottom {
+    position: absolute;
+    background-color: #ccc;
+    left: 50%;
+    top: -16px;
+    height: 16px;
+    width: 1px;
+  }
+
+  .tree-line__bottom {
+    top: auto;
+    /* 为了处理边框的一像素距离 */
+    bottom: -17px;
+  }
+
+  .tree-line__hor-top-right {
+    position: absolute;
+    background-color: #ccc;
+    width: 50%;
+    height: 1px;
+    top: 0;
+    right: 0;
+  }
+
+  .tree-line__hor-top-all {
+    position: absolute;
+    background-color: #ccc;
+    width: 100%;
+    height: 1px;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .tree-line__hor-top-left {
+    position: absolute;
+    background-color: #ccc;
+    width: 50%;
+    height: 1px;
+    top: 0;
+    left: 0;
+  }
 }
