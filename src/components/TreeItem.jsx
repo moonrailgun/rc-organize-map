@@ -5,6 +5,10 @@ import './TreeItem.css';
 let index = 1000;
 
 class TreeItem extends Component {
+  state = {
+    collapse: true,
+  }
+
   get itemIndex() {
     const {
       parent,
@@ -16,6 +20,10 @@ class TreeItem extends Component {
     }
 
     return parent.children.indexOf(item);
+  }
+
+  onClick = () => {
+    this.setState({collapse: !this.state.collapse});
   }
 
   isLastSiblings() {
@@ -38,7 +46,6 @@ class TreeItem extends Component {
     const {
       parent
     } = this.props;
-    console.log('aaaa')
 
     let horLine = null;
     if(parent) {
@@ -67,7 +74,7 @@ class TreeItem extends Component {
           )
         }
         {
-          item.children && item.children.length > 0 && (
+          item.children && item.children.length > 0 && this.state.collapse && (
             <div className="tree-line__bottom"></div>
           )
         }
@@ -81,7 +88,7 @@ class TreeItem extends Component {
     } = this.props;
 
     return (
-      <div className="tree-info">
+      <div className="tree-info" onClick={this.onClick}>
         {item.label}
         {this.renderVerLine()}
       </div>
@@ -95,15 +102,19 @@ class TreeItem extends Component {
       <div className="tree-item" style={{zIndex: index--}}>
         {this.renderItem()}
         {this.renderHorLine()}
-        <div className="tree-children">
-          {
-            item.children && item.children.map((subitem, _i) => {
-              return (
-                <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} />
-              )
-            })
-          }
-        </div>
+        {
+          this.state.collapse && (
+            <div className="tree-children">
+              {
+                item.children && item.children.map((subitem, _i) => {
+                  return (
+                    <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} />
+                  )
+                })
+              }
+            </div>
+          )
+        }
       </div>
     )
   }
