@@ -21,6 +21,9 @@ class GOrgMap extends Component {
   state = {
     scale: 1,
   }
+  dragging = false;
+  mousePos = {x: 0, y: 0};
+  treePos = {x: 0, y: 0};
 
   onZoom = (e) => {
     if(!e.ctrlKey) {
@@ -34,9 +37,50 @@ class GOrgMap extends Component {
       console.log('上滚缩小');
     }
 
-    let target =  this.state.scale - delta * 0.001 * 0.5;
+    let target = this.state.scale - delta * 0.001 * 0.5;
     target = numberRestrict(target, 0.5, 1);
     this.setState({scale: target})
+  }
+
+  onScroll = (e) => {
+    if(this.dragging === false) {
+      return;
+    }
+
+    console.log('onScroll');
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.ctrlKey) {
+      return;
+    }
+
+    let targetX = e.clientX - this.mousePos.x + this.treePos.x;
+    let targetY = e.clientY - this.mousePos.y + this.treePos.y;
+
+    const container = this.refs.container;
+    container.style.left = targetX + 'px';
+    container.style.top = targetY + 'px';
+  }
+
+  onMouseDown = (e) => {
+    console.log('onMouseDown');
+    const container = this.refs.container;
+    const pos = container.getBoundingClientRect();
+    this.dragging = true;
+    this.mousePos = {
+      x: e.clientX,
+      y: e.clientY,
+    }
+
+    this.treePos = {
+      x: pos.x,
+      y: pos.y,
+    };
+  }
+
+  onMouseUp = (e) => {
+    console.log('onMouseUp');
+    this.dragging = false;
   }
 
   render () {
@@ -44,19 +88,28 @@ class GOrgMap extends Component {
       scale,
     } = this.state;
     let containerStyle = {
-      overflow: "auto",
+      position: 'relative',
+      overflow: 'hidden',
       width: '100%',
+      height: '100%',
     }
     let treeStyle = {
       position: 'absolute',
       transform: `scale(${scale})`,
+      cursor: 'grab',
     }
     let map = testMap;
 
     return (
       <div onWheel={this.onZoom} style={containerStyle}>
-        <div style={treeStyle}>
-          <TreeItem item={map.root} root />
+        <div
+          ref="container"
+          style={treeStyle}
+          onMouseMove={this.onScroll}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+        >
+          <TreeItem item={map.root} root ref="tree" />
         </div>
       </div>
     )

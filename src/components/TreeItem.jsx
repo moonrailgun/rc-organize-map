@@ -22,7 +22,8 @@ class TreeItem extends Component {
     return parent.children.indexOf(item);
   }
 
-  onClick = () => {
+  onClick = (e) => {
+    e.stopPropagation();
     this.setState({collapse: !this.state.collapse});
   }
 
@@ -97,7 +98,12 @@ class TreeItem extends Component {
     }
 
     return (
-      <div className="tree-info" onClick={this.onClick}>
+      <div
+        className="tree-info"
+        style={{cursor: item.children && item.children.length > 0 ? 'pointer' : 'default'}}
+        onClick={this.onClick}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         <div className="tree-info__avatar">
           {item.avatar ? (
             <img src={item.avatar} />

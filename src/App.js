@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import GOrgMap from './GOrgMap';
 
 class App extends Component {
