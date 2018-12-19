@@ -97,6 +97,7 @@ class GOrgMap extends Component {
       position: 'absolute',
       transform: `scale(${scale})`,
       cursor: 'grab',
+      transformOrigin: '0px 0px 0px',
     }
     let map = testMap;
 
