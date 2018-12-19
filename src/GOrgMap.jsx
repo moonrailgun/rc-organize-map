@@ -26,6 +26,7 @@ class GOrgMap extends Component {
     x: 0,
     y: 0,
   }
+  originPos = {x: 0, y: 0}
 
   onZoom = (e) => {
     if(!e.ctrlKey) {
@@ -42,6 +43,7 @@ class GOrgMap extends Component {
     let target = this.transform.scale - delta * 0.001 * 0.5;
     target = numberRestrict(target, 0.5, 1);
     this.transform.scale = target;
+    // this.setContainerTransformOrigin({x: e.clientX, y: e.clientY}); // TODO: 在鼠标指针处缩放特性还有问题
     this.updateContainerTransform();
   }
 
@@ -79,6 +81,8 @@ class GOrgMap extends Component {
       x: pos.x,
       y: pos.y,
     };
+
+    this.resetContainerTransformOrigin();
   }
 
   onMouseUp = (e) => {
@@ -96,6 +100,48 @@ class GOrgMap extends Component {
     container.style.transform = `scale(${scale}) translate(${x / scale}px, ${y / scale}px)`
   }
 
+  // 归零变换点
+  resetContainerTransformOrigin = () => {
+    this.transform.x += this.originPos.x * this.transform.scale;
+    this.transform.y += this.originPos.y * this.transform.scale;
+    this.originPos.x = 0;
+    this.originPos.y = 0;
+
+    this.updateContainerTransform();
+    this.updateContainerTransformOrigin();
+  }
+
+  // 将变换中点设置到鼠标当前位置
+  setContainerTransformOrigin = ({x = 0, y = 0} = {}) => {
+    const container = this.refs.container;
+    const containerPos = container.getBoundingClientRect();
+    const {
+      scale,
+    } = this.transform;
+    const targetX = (x - containerPos.x) / scale;
+    const targetY = (y - containerPos.y) / scale;
+
+    // debugger;
+    this.transform.x -= (targetX - this.originPos.x) * scale;
+    this.transform.y -= (targetY - this.originPos.y) * scale;
+    this.updateContainerTransform();
+
+    this.originPos.x = targetX;
+    this.originPos.y = targetY;
+    this.updateContainerTransformOrigin();
+  }
+
+  updateContainerTransformOrigin = () => {
+    const container = this.refs.container;
+    const {
+      x,
+      y,
+    } = this.originPos;
+    container.style.transformOrigin = `${x}px ${y}px 0px`;
+
+    this.refs.refPoint.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
   render () {
     let containerStyle = {
       position: 'relative',
@@ -107,6 +153,7 @@ class GOrgMap extends Component {
       position: 'absolute',
       cursor: 'grab',
       transformOrigin: '0px 0px 0px',
+      border: '1px solid red',
     }
     let map = testMap;
 
@@ -118,7 +165,20 @@ class GOrgMap extends Component {
           onMouseMove={this.onScroll}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
+          onClick={this.onClick}
         >
+          <div
+            ref="refPoint"
+            style={{
+              position: 'absolute',
+              width: 10,
+              height: 10,
+              marginLeft: -5,
+              marginTop: -5,
+              borderRadius: '50%',
+              backgroundColor: 'red',
+            }}
+          ></div>
           <TreeItem item={map.root} root ref="tree" />
         </div>
       </div>
