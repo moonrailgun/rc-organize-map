@@ -104,6 +104,9 @@
 
   .tree-children {
     display: flex;
+    overflow: hidden;
+    justify-content: center;
+    transition: width 0.5s ease-in-out;
   }
 
   .tree-line__top, .tree-line__bottom {

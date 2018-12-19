@@ -6,7 +6,7 @@ let index = 1000;
 
 class TreeItem extends Component {
   state = {
-    collapse: true,
+    collapse: false,
   }
 
   get itemIndex() {
@@ -75,7 +75,7 @@ class TreeItem extends Component {
           )
         }
         {
-          item.children && item.children.length > 0 && this.state.collapse && (
+          item.children && item.children.length > 0 && !this.state.collapse && (
             <div className="tree-line__bottom"></div>
           )
         }
@@ -91,9 +91,9 @@ class TreeItem extends Component {
     let arrow;
     if(item.children && item.children.length > 0) {
       arrow = this.state.collapse ? (
-        <div className="tree-arrow__up"></div>
-      ) : (
         <div className="tree-arrow__down"></div>
+      ) : (
+        <div className="tree-arrow__up"></div>
       )
     }
 
@@ -136,19 +136,15 @@ class TreeItem extends Component {
       <div className="tree-item" style={{zIndex: index--}}>
         {this.renderItem()}
         {this.renderHorLine()}
-        {
-          this.state.collapse && (
-            <div className="tree-children">
-              {
-                item.children && item.children.map((subitem, _i) => {
-                  return (
-                    <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} />
-                  )
-                })
-              }
-            </div>
-          )
-        }
+        <div className="tree-children" style={{overflow: 'hidden', width: this.state.collapse ? 0 : '100%'}}>
+          {
+            item.children && item.children.map((subitem, _i) => {
+              return (
+                <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} />
+              )
+            })
+          }
+        </div>
       </div>
     )
   }
