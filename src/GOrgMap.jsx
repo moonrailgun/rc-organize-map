@@ -142,6 +142,17 @@ class GOrgMap extends Component {
     this.refs.refPoint.style.transform = `translate(${x}px, ${y}px)`;
   }
 
+  onItemCollapse = (el, childrenWidth, isCollapse) => {
+    const elWidth = el.getBoundingClientRect().width;
+    let diff = (childrenWidth - (elWidth + 16 * 2)) / 2; // 其中16 * 2 是容器外边距
+    if(isCollapse) {
+      this.transform.x -= diff;
+    }else {
+      this.transform.x += diff;
+    }
+    this.updateContainerTransform();
+  }
+
   render () {
     let containerStyle = {
       position: 'relative',
@@ -179,7 +190,7 @@ class GOrgMap extends Component {
               backgroundColor: 'red',
             }}
           ></div>
-          <TreeItem item={map.root} root ref="tree" />
+        <TreeItem item={map.root} root ref="tree" onItemCollapse={this.onItemCollapse} />
         </div>
       </div>
     )

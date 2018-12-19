@@ -8,6 +8,7 @@ class TreeItem extends Component {
   state = {
     collapse: false,
   }
+  childrenWidth: 0;
 
   get itemIndex() {
     const {
@@ -22,7 +23,21 @@ class TreeItem extends Component {
     return parent.children.indexOf(item);
   }
 
+  componentDidMount() {
+    if(this.refs.children) {
+      this.childrenWidth = this.refs.children.getBoundingClientRect().width;
+    }
+  }
+
   onClick = (e) => {
+    const {
+      item,
+      onItemCollapse,
+    } = this.props;
+    if(item.children && item.children.length > 0) {
+      onItemCollapse && onItemCollapse(e.currentTarget, this.childrenWidth, this.state.collapse);
+    }
+
     this.setState({collapse: !this.state.collapse});
   }
 
@@ -129,7 +144,10 @@ class TreeItem extends Component {
   }
 
   render () {
-    const item = this.props.item;
+    const {
+      item,
+      onItemCollapse,
+    } = this.props;
     const collapse = this.state.collapse;
 
     return (
@@ -137,13 +155,14 @@ class TreeItem extends Component {
         {this.renderItem()}
         {this.renderHorLine()}
         <div
+          ref="children"
           className="tree-children"
           style={{overflow: 'hidden', width: collapse ? 0 : '100%', opacity: collapse ? 0 : 1 }}
         >
           {
             item.children && item.children.map((subitem, _i) => {
               return (
-                <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} />
+                <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} onItemCollapse={onItemCollapse} />
               )
             })
           }
@@ -157,6 +176,7 @@ TreeItem.propTypes = {
   item: PropTypes.object,
   parent: PropTypes.object,
   root: PropTypes.bool,
+  onItemCollapse: PropTypes.func,
 }
 
 export default TreeItem;
