@@ -18,12 +18,14 @@ const numberRestrict = function(num, min, max) {
 }
 
 class GOrgMap extends Component {
-  state = {
-    scale: 1,
-  }
   dragging = false;
   mousePos = {x: 0, y: 0};
   treePos = {x: 0, y: 0};
+  transform = {
+    scale: 1,
+    x: 0,
+    y: 0,
+  }
 
   onZoom = (e) => {
     if(!e.ctrlKey) {
@@ -37,9 +39,10 @@ class GOrgMap extends Component {
       console.log('上滚缩小');
     }
 
-    let target = this.state.scale - delta * 0.001 * 0.5;
+    let target = this.transform.scale - delta * 0.001 * 0.5;
     target = numberRestrict(target, 0.5, 1);
-    this.setState({scale: target})
+    this.transform.scale = target;
+    this.updateContainerTransform();
   }
 
   onScroll = (e) => {
@@ -57,9 +60,9 @@ class GOrgMap extends Component {
     let targetX = e.clientX - this.mousePos.x + this.treePos.x;
     let targetY = e.clientY - this.mousePos.y + this.treePos.y;
 
-    const container = this.refs.container;
-    container.style.left = targetX + 'px';
-    container.style.top = targetY + 'px';
+    this.transform.x = targetX;
+    this.transform.y = targetY;
+    this.updateContainerTransform();
   }
 
   onMouseDown = (e) => {
@@ -83,10 +86,17 @@ class GOrgMap extends Component {
     this.dragging = false;
   }
 
-  render () {
-    let {
+  updateContainerTransform = () => {
+    const container = this.refs.container;
+    const {
       scale,
-    } = this.state;
+      x,
+      y,
+    } = this.transform;
+    container.style.transform = `scale(${scale}) translate(${x / scale}px, ${y / scale}px)`
+  }
+
+  render () {
     let containerStyle = {
       position: 'relative',
       overflow: 'hidden',
@@ -95,7 +105,6 @@ class GOrgMap extends Component {
     }
     let treeStyle = {
       position: 'absolute',
-      transform: `scale(${scale})`,
       cursor: 'grab',
       transformOrigin: '0px 0px 0px',
     }
