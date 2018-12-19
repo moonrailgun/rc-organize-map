@@ -23,7 +23,6 @@ class TreeItem extends Component {
   }
 
   onClick = (e) => {
-    e.stopPropagation();
     this.setState({collapse: !this.state.collapse});
   }
 
@@ -131,12 +130,16 @@ class TreeItem extends Component {
 
   render () {
     const item = this.props.item;
+    const collapse = this.state.collapse;
 
     return (
       <div className="tree-item" style={{zIndex: index--}}>
         {this.renderItem()}
         {this.renderHorLine()}
-        <div className="tree-children" style={{overflow: 'hidden', width: this.state.collapse ? 0 : '100%'}}>
+        <div
+          className="tree-children"
+          style={{overflow: 'hidden', width: collapse ? 0 : '100%', opacity: collapse ? 0 : 1 }}
+        >
           {
             item.children && item.children.map((subitem, _i) => {
               return (
