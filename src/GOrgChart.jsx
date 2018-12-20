@@ -70,7 +70,7 @@ class GOrgChart extends Component {
   onMouseDown = (e) => {
     console.log('onMouseDown');
     const container = this.refs.container;
-    const pos = container.getBoundingClientRect();
+    const transform = this.transform;
     this.dragging = true;
     this.mousePos = {
       x: e.clientX,
@@ -78,8 +78,8 @@ class GOrgChart extends Component {
     }
 
     this.treePos = {
-      x: pos.x,
-      y: pos.y,
+      x: transform.x,
+      y: transform.y,
     };
 
     this.resetContainerTransformOrigin();
@@ -176,7 +176,6 @@ class GOrgChart extends Component {
           onMouseMove={this.onScroll}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
-          onClick={this.onClick}
         >
           {/* transformOrigin参考点
           <div

@@ -7,7 +7,7 @@ class TreeItem extends Component {
   state = {
     collapse: false,
   }
-  childrenWidth: 0;
+  childrenWidth = 0;
 
   get itemIndex() {
     const {
