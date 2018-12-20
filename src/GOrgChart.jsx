@@ -17,7 +17,7 @@ const numberRestrict = function(num, min, max) {
   return num;
 }
 
-class GOrgMap extends Component {
+class GOrgChart extends Component {
   dragging = false;
   mousePos = {x: 0, y: 0};
   treePos = {x: 0, y: 0};
@@ -197,4 +197,4 @@ class GOrgMap extends Component {
   }
 }
 
-export default GOrgMap;
+export default GOrgChart;
