@@ -139,7 +139,7 @@ class GOrgChart extends Component {
     } = this.originPos;
     container.style.transformOrigin = `${x}px ${y}px 0px`;
 
-    this.refs.refPoint.style.transform = `translate(${x}px, ${y}px)`;
+    // this.refs.refPoint.style.transform = `translate(${x}px, ${y}px)`;
   }
 
   onItemCollapse = (el, childrenWidth, isCollapse) => {
@@ -178,6 +178,7 @@ class GOrgChart extends Component {
           onMouseUp={this.onMouseUp}
           onClick={this.onClick}
         >
+          {/* transformOrigin参考点
           <div
             ref="refPoint"
             style={{
@@ -189,8 +190,8 @@ class GOrgChart extends Component {
               borderRadius: '50%',
               backgroundColor: 'red',
             }}
-          ></div>
-        <TreeItem item={map.root} root ref="tree" onItemCollapse={this.onItemCollapse} />
+          ></div>*/}
+          <TreeItem item={map.root} root ref="tree" onItemCollapse={this.onItemCollapse} />
         </div>
       </div>
     )

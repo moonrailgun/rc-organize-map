@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './TreeItem.scss';
-
-let index = 1000;
+import TreeBaseNode from './TreeBaseNode';
 
 class TreeItem extends Component {
   state = {
@@ -102,14 +101,7 @@ class TreeItem extends Component {
       item
     } = this.props;
 
-    let arrow;
-    if(item.children && item.children.length > 0) {
-      arrow = this.state.collapse ? (
-        <div className="tree-arrow__down"></div>
-      ) : (
-        <div className="tree-arrow__up"></div>
-      )
-    }
+
 
     return (
       <div
@@ -118,26 +110,7 @@ class TreeItem extends Component {
         onClick={this.onClick}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="tree-info__avatar">
-          {item.avatar ? (
-            <img src={item.avatar} />
-          ): <span>无</span>}
-        </div>
-        <div className="tree-info__prop">
-          <div className="tree-info__prop-name">{ item.name }</div>
-          <div className="tree-info__prop-pic">{ item.pic || '暂无负责人' }</div>
-          {
-            item.tag && (
-              <div className="tree-info__prop-tag">{ item.tag }</div>
-            )
-          }
-          {
-            item.number && (
-              <div className="tree-info__prop-number">人数: { item.number }</div>
-            )
-          }
-          { arrow }
-        </div>
+        <TreeBaseNode item={item} isCollapse={this.state.collapse} />
         { this.renderVerLine() }
       </div>
     )
@@ -151,7 +124,7 @@ class TreeItem extends Component {
     const collapse = this.state.collapse;
 
     return (
-      <div className="tree-item" style={{zIndex: index--}}>
+      <div className="tree-item">
         {this.renderItem()}
         {this.renderHorLine()}
         <div
@@ -162,7 +135,7 @@ class TreeItem extends Component {
           {
             item.children && item.children.map((subitem, _i) => {
               return (
-                <TreeItem key={`${index}#${_i}`} item={subitem} parent={item} onItemCollapse={onItemCollapse} />
+                <TreeItem key={`#${_i}`} item={subitem} parent={item} onItemCollapse={onItemCollapse} />
               )
             })
           }
