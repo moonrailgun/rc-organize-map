@@ -28,6 +28,17 @@ class GOrgChart extends Component {
   }
   originPos = {x: 0, y: 0}
 
+  componentDidMount() {
+    const container = this.refs.container;
+    if(this.props.center && container) {
+      const width = container.getBoundingClientRect().width;
+      const parentEl = container.parentElement;
+      const parentWidth = parentEl.clientWidth;
+      this.transform.x = -(width - parentWidth) / 2;
+      this.updateContainerTransform();
+    }
+  }
+
   onZoom = (e) => {
     if(!e.ctrlKey) {
       return;
