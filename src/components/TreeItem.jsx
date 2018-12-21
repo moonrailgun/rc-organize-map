@@ -56,6 +56,12 @@ class TreeItem extends Component {
     return parent && parent.children ? 0 === this.itemIndex : false;
   }
 
+  isAlone() {
+    const { parent } = this.props;
+
+    return parent && parent.children && parent.children.length === 1;
+  }
+
   renderHorLine() {
     const {
       parent
@@ -63,6 +69,10 @@ class TreeItem extends Component {
 
     let horLine = null;
     if(parent) {
+      if (this.isAlone()) {
+        return;
+      }
+
       if(this.isFirstSiblings()) {
         horLine = <div className="tree-line__hor-top-right"></div>
       } else if(this.isLastSiblings()) {
